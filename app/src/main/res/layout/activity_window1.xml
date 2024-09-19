@@ -1,5 +1,3 @@
-
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,24 +6,23 @@
     android:background="#eff6ff"
     tools:context=".ui.Window1"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp">
+    tools:layout_editor_absoluteY="-2dp">
 
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="180dp"
-        android:layout_height="800dp"
-        android:background="#000080"
+        android:layout_width="110dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/oval"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.428" />
 
 
-
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="1100dp"
+        android:layout_width="1180dp"
         android:layout_height="50dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,22 +33,22 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="100dp"
+        android:layout_width="90dp"
         android:layout_height="39dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="100dp"
-        android:text="Admin"
+        android:text="ADMIN"
         android:textColor="#eff6ff"
-        android:textSize="60px"
+        android:textSize="50px"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/button2"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:src="@drawable/baseline_dashboard_24"
@@ -60,10 +57,10 @@
 
     <ImageButton
         android:id="@+id/button3"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:src="@drawable/baseline_shopping_cart_24"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,21 +69,22 @@
 
     <ImageButton
         android:id="@+id/button4"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:src="@drawable/order"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
+
     <ImageButton
         android:id="@+id/button5"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:src="@drawable/truck"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,10 +93,10 @@
 
     <ImageButton
         android:id="@+id/button6"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:src="@drawable/graph"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,55 +105,29 @@
 
     <ImageButton
         android:id="@+id/button7"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:src="@drawable/cashier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button6"
         tools:ignore="MissingConstraints" />
 
+
     <ImageButton
         android:id="@+id/button8"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
         android:src="@drawable/logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button7"
-        app:layout_constraintVertical_bias="0.03" />
-
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="100dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="192dp"
-        android:layout_marginTop="72dp"
-        android:text="Purchase"
-        android:textColor="@color/black"
-        android:textSize="40px"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="66dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="304dp"
-        android:layout_marginTop="72dp"
-        android:text="Result"
-        android:textColor="@color/black"
-        android:textSize="40px"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintVertical_bias="0.508" />
 
     <TextView
         android:id="@+id/textView3"
@@ -173,38 +145,38 @@
 
     <EditText
         android:id="@+id/plain_text_input"
-        android:layout_width="843dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="573dp"
+        android:layout_height="37dp"
         android:layout_marginTop="64dp"
+        android:layout_marginEnd="72dp"
         android:background="@color/white"
         android:drawableRight="@drawable/baseline_search_24"
         android:inputType="text"
         android:radius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
         app:layout_constraintTop_toTopOf="@+id/imageView1" />
 
     <Button
         android:id="@+id/BWBreads"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
+        android:layout_marginStart="30dp"
         android:background="@android:color/transparent"
         android:text="BW BREADS"
         android:textColor="@color/black"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/scrollView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.138" />
+        app:layout_constraintVertical_bias="0.136" />
 
     <Button
         android:id="@+id/BWPastries"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
         android:text="BW PASTRIES"
         android:textColor="@color/black"
@@ -218,7 +190,7 @@
         android:id="@+id/BWDonuts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
         android:text="BW Donuts"
         android:textColor="@color/black"
@@ -232,7 +204,7 @@
         android:id="@+id/BWRecoveryproducts"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
         android:text="BW Recovery "
         android:textColor="@color/black"
@@ -246,7 +218,7 @@
         android:id="@+id/BWPasalubong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
         android:text="BW Pasalubong"
         android:textColor="@color/black"
@@ -260,7 +232,7 @@
         android:id="@+id/BWChilledbites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
         android:text="BW CHILLED BITES"
         android:textColor="@color/black"
@@ -274,7 +246,7 @@
         android:id="@+id/BWCakes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
         android:text="BW CAKES"
         android:textColor="@color/black"
@@ -289,12 +261,11 @@
         android:id="@+id/scrollView2"
         android:layout_width="771dp"
         android:layout_height="605dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/BWCakes"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
@@ -302,24 +273,181 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/nav_view"
             tools:layout_editor_absoluteY="180dp"
             tools:listitem="@layout/item_product" />
     </ScrollView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewcart"
-        android:layout_width="330dp"
-        android:layout_height="600dp"
-        android:layout_margin="5dp"
-        android:layout_marginStart="4dp"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="381dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/cartdesign"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/scrollView2"
-        app:layout_constraintTop_toBottomOf="@+id/BWDonuts"
-        app:layout_constraintVertical_bias="1.0"
-        tools:listitem="@layout/cart_item_layout" />
+        app:layout_constraintTop_toTopOf="@+id/imageView1"
+        app:layout_constraintVertical_bias="0.0">
 
+        <!-- Header Section -->
+        <TextView
+            android:id="@+id/headerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ORDER | CART"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/headerImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/baseline_search_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@id/headerTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/itemHeaderTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Item"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/priceHeaderTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/priceHeaderTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:text="Price"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/qtyHeaderTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/itemHeaderTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- RecyclerView -->
+
+        <!-- Footer Section -->
+        <TextView
+            android:id="@+id/qtyHeaderTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Qty"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/priceHeaderTextView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerviewcart"
+            android:layout_width="349dp"
+            android:layout_height="368dp"
+
+            app:layout_constraintBottom_toTopOf="@id/footerLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.333"
+            tools:listitem="@layout/cart_item_layout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/footerLayout"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!-- Table Header -->
+
+
+            <!-- Table Row -->
+
+            <!-- Discount and VAT -->
+            <TextView
+                android:id="@+id/discountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20% Discount | VAT 2.00"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/vatAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PHP 000000"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/discountTextView" />
+
+            <TextView
+                android:id="@+id/totalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="TOTAL"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/vatAmountTextView" />
+
+            <TextView
+                android:id="@+id/totalAmountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PHP 121.22"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totalTextView" />
+
+            <Button
+                android:id="@+id/payButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Checkout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalAmountTextView"
+                app:layout_constraintVertical_bias="0.947" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 

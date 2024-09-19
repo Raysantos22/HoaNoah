@@ -66,7 +66,7 @@
 
     <!-- Hidden Button positioned behind the CardView -->
     <Button
-        android:id="@+id/hiddenButton"
+        android:id="@+id/buttonAddToCart"
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:layout_margin="16dp"

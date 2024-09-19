@@ -1,6 +1,5 @@
-package com.example.possystembw.model
+package com.example.possystembw.DAO
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.possystembw.database.Product
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +10,8 @@ interface ProductDao {
         fun getAllProducts(): Flow<List<Product>>
         @Query("SELECT COUNT(*) FROM products")
         suspend fun getProductCount(): Int
+
+
 
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         suspend fun insertProduct(product: Product)
@@ -23,5 +24,8 @@ interface ProductDao {
 
         @Query("SELECT * FROM products WHERE name LIKE :name")
         fun getProductsByName(name: String): Flow<List<Product>>
-}
+
+
+        }
+
 
