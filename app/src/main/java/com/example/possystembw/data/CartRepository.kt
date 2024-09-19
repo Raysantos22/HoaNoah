@@ -25,6 +25,7 @@ class CartRepository(private val cartDao: CartDao) {
         cartDao.deleteAll()
     }
 
+
     suspend fun getCartItemByProductId(productId: Int): CartItem? {
         return cartDao.getCartItemByProductId(productId)
     }

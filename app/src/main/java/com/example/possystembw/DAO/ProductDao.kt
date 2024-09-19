@@ -6,8 +6,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
+
         @Query("SELECT * FROM products")
         fun getAllProducts(): Flow<List<Product>>
+
         @Query("SELECT COUNT(*) FROM products")
         suspend fun getProductCount(): Int
 
@@ -15,6 +17,9 @@ interface ProductDao {
 
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         suspend fun insertProduct(product: Product)
+
+        @Update
+        suspend fun updateProduct(product: Product)
 
         @Query("DELETE FROM products")
         suspend fun deleteAll()
@@ -25,7 +30,11 @@ interface ProductDao {
         @Query("SELECT * FROM products WHERE name LIKE :name")
         fun getProductsByName(name: String): Flow<List<Product>>
 
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        suspend fun insertAll(products: List<Product>)
+}
 
-        }
+
+
 
 

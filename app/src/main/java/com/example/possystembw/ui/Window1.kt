@@ -2,7 +2,6 @@ package com.example.possystembw.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +13,6 @@ import com.example.possystembw.adapter.ProductAdapter
 import com.example.possystembw.ShoppingApplication
 import com.example.possystembw.adapter.CartAdapter
 import com.example.possystembw.ui.ViewModel.ProductViewModel
-import com.example.possystembw.ui.ViewModel.ProductViewModelFactory
 import com.example.possystembw.ui.ViewModel.CartViewModel
 import com.example.possystembw.ui.ViewModel.CartViewModelFactory
 import com.example.possystembw.database.Product
@@ -25,14 +23,9 @@ import kotlinx.coroutines.withContext
 import android.app.AlertDialog
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class Window1 : AppCompatActivity() {
     private lateinit var productViewModel: ProductViewModel
@@ -44,7 +37,6 @@ class Window1 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
         Log.d(TAG, "onCreate: Started")
 
         try {
@@ -71,7 +63,6 @@ class Window1 : AppCompatActivity() {
             recyclerViewCart.adapter = cartAdapter
             recyclerViewCart.layoutManager = LinearLayoutManager(this)
 
-
             // Initialize ViewModels
             val repository = (application as? ShoppingApplication)?.repository
             val cartRepository = (application as? ShoppingApplication)?.cartRepository
@@ -79,17 +70,21 @@ class Window1 : AppCompatActivity() {
                 throw IllegalStateException("Repositories are null. Make sure ShoppingApplication is properly set up.")
             }
 
-            productViewModel = ViewModelProvider(this, ProductViewModelFactory(repository))
+            productViewModel = ViewModelProvider(this,
+                ProductViewModel.ProductViewModelFactory(application)
+            )
                 .get(ProductViewModel::class.java)
             cartViewModel = ViewModelProvider(this, CartViewModelFactory(cartRepository))
                 .get(CartViewModel::class.java)
 
+            // Sync with MySQL
+
+
+
             // Observe products and update the adapter
             lifecycleScope.launch {
-                productViewModel.allProducts.collectLatest { products ->
-                    withContext(Dispatchers.Main) {
-                        productAdapter.submitList(products)
-                    }
+                productViewModel.allProducts.observe(this@Window1) { products ->
+                    productAdapter.submitList(products)
                 }
             }
 
@@ -103,6 +98,8 @@ class Window1 : AppCompatActivity() {
                 }
             }
 
+
+
             // Set up pay button click listener
             payButton.setOnClickListener {
                 showPaymentDialog()
@@ -114,6 +111,32 @@ class Window1 : AppCompatActivity() {
             // Optionally, show an error dialog or toast to the user
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy called")
+    }
+
 
     private fun addToCart(product: Product) {
         lifecycleScope.launch {
@@ -211,8 +234,4 @@ class Window1 : AppCompatActivity() {
         Log.d(TAG, "Printing receipt...")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy called")
-    }
 }

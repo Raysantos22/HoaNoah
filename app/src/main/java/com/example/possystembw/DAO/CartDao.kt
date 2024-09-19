@@ -24,4 +24,8 @@ interface CartDao {
 
     @Query("SELECT * FROM cart_items WHERE product_id = :productId")
     suspend fun getCartItemByProductId(productId: Int): CartItem?
+
+    // Add this function
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(cartItems: List<CartItem>)
 }

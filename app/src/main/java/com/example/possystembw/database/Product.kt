@@ -10,6 +10,6 @@ data class Product(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "price") val price: Double,
     @ColumnInfo(name = "imageUrl") val imageUrl: String,
-    @ColumnInfo(name = "quantity") var quantity: Int = 0
+    @ColumnInfo(name = "quantity") var quantity: Int = 0,
 
 )
