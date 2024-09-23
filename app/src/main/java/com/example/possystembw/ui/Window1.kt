@@ -21,32 +21,40 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.app.AlertDialog
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.possystembw.AutoDatabaseTransferManager
+import com.example.possystembw.DAO.TransactionDao
+import com.example.possystembw.data.AppDatabase
+import com.example.possystembw.database.TransactionRecord
 import kotlinx.coroutines.flow.collectLatest
+import java.util.UUID
 
 class Window1 : AppCompatActivity() {
+    private lateinit var autoDatabaseTransferManager: AutoDatabaseTransferManager
     private lateinit var productViewModel: ProductViewModel
     private lateinit var cartViewModel: CartViewModel
     private lateinit var totalAmountTextView: TextView
     private lateinit var payButton: Button
     private val TAG = "Window1"
-    private lateinit var drawerLayout: DrawerLayout
-
+    private lateinit var transactionDao: TransactionDao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: Started")
-
         try {
             setContentView(R.layout.activity_window1)
             Log.d(TAG, "setContentView completed")
-
             // Initialize UI components
             totalAmountTextView = findViewById(R.id.totalAmountTextView)
             payButton = findViewById(R.id.payButton)
 
+            autoDatabaseTransferManager = AutoDatabaseTransferManager(this, lifecycleScope)
+            autoDatabaseTransferManager.startMonitoringConnectivity()
             // Set up RecyclerView for products
             val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
             val productAdapter = ProductAdapter { product ->
@@ -54,7 +62,8 @@ class Window1 : AppCompatActivity() {
             }
             recyclerView.adapter = productAdapter
             recyclerView.layoutManager = GridLayoutManager(this, 5)
-
+            val database = AppDatabase.getDatabase(this)
+            transactionDao = database.transactionDao()
             // Set up RecyclerView for cart
             val recyclerViewCart = findViewById<RecyclerView>(R.id.recyclerviewcart)
             val cartAdapter = CartAdapter { cartItem ->
@@ -62,32 +71,27 @@ class Window1 : AppCompatActivity() {
             }
             recyclerViewCart.adapter = cartAdapter
             recyclerViewCart.layoutManager = LinearLayoutManager(this)
-
             // Initialize ViewModels
             val repository = (application as? ShoppingApplication)?.repository
+
             val cartRepository = (application as? ShoppingApplication)?.cartRepository
             if (repository == null || cartRepository == null) {
                 throw IllegalStateException("Repositories are null. Make sure ShoppingApplication is properly set up.")
             }
-
-            productViewModel = ViewModelProvider(this,
+            productViewModel = ViewModelProvider(
+                this,
                 ProductViewModel.ProductViewModelFactory(application)
             )
                 .get(ProductViewModel::class.java)
             cartViewModel = ViewModelProvider(this, CartViewModelFactory(cartRepository))
                 .get(CartViewModel::class.java)
-
             // Sync with MySQL
-
-
-
             // Observe products and update the adapter
             lifecycleScope.launch {
                 productViewModel.allProducts.observe(this@Window1) { products ->
                     productAdapter.submitList(products)
                 }
             }
-
             // Observe cart items, update the adapter and total amount
             lifecycleScope.launch {
                 cartViewModel.allCartItems.collectLatest { cartItems ->
@@ -97,18 +101,12 @@ class Window1 : AppCompatActivity() {
                     }
                 }
             }
-
-
-
-            // Set up pay button click listener
             payButton.setOnClickListener {
                 showPaymentDialog()
             }
-
             Log.d(TAG, "onCreate completed successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error in onCreate", e)
-            // Optionally, show an error dialog or toast to the user
         }
     }
 
@@ -134,9 +132,9 @@ class Window1 : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        autoDatabaseTransferManager.stopMonitoringConnectivity()
         Log.d(TAG, "onDestroy called")
     }
-
 
     private fun addToCart(product: Product) {
         lifecycleScope.launch {
@@ -153,6 +151,42 @@ class Window1 : AppCompatActivity() {
                 )
                 cartViewModel.insert(newCartItem)
             }
+        }
+    }
+
+    private suspend fun addTransaction(
+        cartItems: List<CartItem>,
+        receiptNumber: String,
+        paymentMethod: String,
+        ar: Double,
+        total: Double,
+        vatRate: Double,
+        discountAmount: Double
+    ) {
+        val transactionId = UUID.randomUUID().toString()
+        val discountRate = if (total > 0) discountAmount / total else 0.0
+
+        cartItems.forEach { cartItem ->
+            val itemTotal = cartItem.price * cartItem.quantity
+            val itemDiscount = (discountAmount / total) * itemTotal
+            val itemVat = (itemTotal - itemDiscount) * vatRate
+            val transactionRecord = TransactionRecord(
+                transactionId = transactionId,
+                name = cartItem.productName,
+                price = cartItem.price,
+                quantity = cartItem.quantity,
+                subtotal = itemTotal,
+                vatRate = vatRate,
+                vatAmount = itemVat,
+                discountRate = discountRate,
+                discountAmount = itemDiscount,
+                total = itemTotal - itemDiscount + itemVat,
+                receiptNumber = receiptNumber,
+                paymentMethod = paymentMethod,
+                ar = if (ar > 0.0) (itemTotal - itemDiscount + itemVat) else 0.0
+            )
+            transactionDao.insert(transactionRecord)
+            Log.d(TAG, "Added transaction: $transactionRecord")
         }
     }
 
@@ -175,16 +209,58 @@ class Window1 : AppCompatActivity() {
     private fun showPaymentDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_payment, null)
         val amountPaidEditText = dialogView.findViewById<EditText>(R.id.amountPaidEditText)
+        val paymentMethodSpinner = dialogView.findViewById<Spinner>(R.id.paymentMethodSpinner)
+        val vatSpinner = dialogView.findViewById<Spinner>(R.id.vatSpinner)
+        val discountSpinner = dialogView.findViewById<Spinner>(R.id.discountSpinner)
+        val discountAmountEditText = dialogView.findViewById<EditText>(R.id.discountAmountEditText)
+
+        // Set up the spinner with payment methods
+        val paymentMethods =
+            arrayOf("Cash", "Credit Card", "Debit Card", "Bank Transfer", "Gcash", "UTANG")
+        val paymentAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, paymentMethods)
+        paymentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        paymentMethodSpinner.adapter = paymentAdapter
+
+        // Set up the VAT spinner
+        val vatOptions = arrayOf("12%", "0%")
+        val vatAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, vatOptions)
+        vatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        vatSpinner.adapter = vatAdapter
+
+        // Set up the discount spinner
+        val discountOptions = arrayOf("No Discount", "Percentage", "Fixed Amount")
+        val discountAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, discountOptions)
+        discountAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        discountSpinner.adapter = discountAdapter
+
+        // Show/hide discount amount input based on discount spinner selection
+        discountSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                discountAmountEditText.visibility = if (position != 0) View.VISIBLE else View.GONE
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
 
         AlertDialog.Builder(this)
             .setTitle("Payment")
             .setView(dialogView)
             .setPositiveButton("Pay") { dialog, _ ->
                 val amountPaid = amountPaidEditText.text.toString().toDoubleOrNull()
+                val paymentMethod = paymentMethodSpinner.selectedItem.toString()
+                val vatRate = if (vatSpinner.selectedItem.toString() == "12%") 0.12 else 0.0
+                val discountType = discountSpinner.selectedItem.toString()
+                val discountValue = discountAmountEditText.text.toString().toDoubleOrNull() ?: 0.0
                 if (amountPaid != null) {
-                    processPayment(amountPaid)
+                    processPayment(amountPaid, paymentMethod, vatRate, discountType, discountValue)
                 } else {
-                    // Handle invalid input
                     Log.e(TAG, "Invalid amount entered")
                 }
                 dialog.dismiss()
@@ -195,26 +271,91 @@ class Window1 : AppCompatActivity() {
             .show()
     }
 
-    private fun processPayment(amountPaid: Double) {
+    private fun generateReceiptNumber(): String {
+        return "REC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase()
+    }
+
+    private fun processPayment(
+        amountPaid: Double,
+        paymentMethod: String,
+        vatRate: Double,
+        discountType: String,
+        discountValue: Double
+    ) {
         lifecycleScope.launch {
             val cartItems = cartViewModel.allCartItems.value ?: emptyList()
-            val totalAmount = cartItems.sumOf { cartItem -> cartItem.price * cartItem.quantity }
+            val subtotal = cartItems.sumOf { cartItem -> cartItem.price * cartItem.quantity }
+
+            val discountAmount = when (discountType) {
+                "Percentage" -> subtotal * (discountValue / 100)
+                "Fixed Amount" -> discountValue
+                else -> 0.0
+            }
+
+            // Calculate discountRate
+            val discountRate = if (subtotal > 0) discountAmount / subtotal else 0.0
+
+            val discountedSubtotal = subtotal - discountAmount
+            val vatAmount = discountedSubtotal * vatRate
+            val totalAmount = discountedSubtotal + vatAmount
+
             val change = amountPaid - totalAmount
+            val ar =
+                if (paymentMethod == "Credit Card" || paymentMethod == "Gcash" || paymentMethod == "UTANG") totalAmount else 0.0
 
             if (change >= 0.0) {
-                showChangeAndReceiptDialog(change, cartItems)
-                // Clear the cart after successful payment
+                val receiptNumber = generateReceiptNumber()
+                addTransaction(
+                    cartItems,
+                    receiptNumber,
+                    paymentMethod,
+                    ar,
+                    totalAmount,
+                    vatRate,
+                    discountAmount
+                )
+                showChangeAndReceiptDialog(
+                    change,
+                    cartItems,
+                    receiptNumber,
+                    paymentMethod,
+                    ar,
+                    vatAmount,
+                    discountAmount,
+                    totalAmount,
+                    discountRate
+                )
                 cartViewModel.deleteAll()
             } else {
-                // Handle insufficient payment
                 Log.e(TAG, "Insufficient payment")
             }
         }
     }
 
-    private fun showChangeAndReceiptDialog(change: Double, cartItems: List<CartItem>) {
-        val message = String.format("Change: P%.2f", change)
-
+    private fun showChangeAndReceiptDialog(
+        change: Double,
+        cartItems: List<CartItem>,
+        receiptNumber: String,
+        paymentMethod: String,
+        ar: Double,
+        vatAmount: Double,
+        discountAmount: Double,
+        totalAmount: Double,
+        discountRate: Double
+    ) {
+        val message = String.format(
+            "Change: P%.2f\n" +
+                    "Receipt Number: %s\n" +
+                    "Payment Method: %s\n" +
+                    "Subtotal: P%.2f\n" +
+                    "Discount: P%.2f (%.2f%%)\n" +
+                    "VAT: P%.2f\n" +
+                    "Total: P%.2f\n" +
+                    "Accounts receivable: P%.2f",
+            change, receiptNumber, paymentMethod,
+            totalAmount - vatAmount + discountAmount,
+            discountAmount, discountRate * 100, vatAmount, totalAmount, ar
+        )
         AlertDialog.Builder(this)
             .setTitle("Payment Successful")
             .setMessage(message)
@@ -222,16 +363,39 @@ class Window1 : AppCompatActivity() {
                 dialog.dismiss()
             }
             .setNeutralButton("Print Receipt") { dialog, _ ->
-                printReceipt(cartItems, change)
+                printReceipt(
+                    cartItems,
+                    change,
+                    receiptNumber,
+                    paymentMethod,
+                    ar,
+                    vatAmount,
+                    discountAmount,
+                    totalAmount,
+                    discountRate
+                )
                 dialog.dismiss()
             }
             .show()
     }
 
-    private fun printReceipt(cartItems: List<CartItem>, change: Double) {
-        // Implement receipt printing logic here
-        // This could involve generating a PDF, sending to a printer, or displaying a receipt on screen
-        Log.d(TAG, "Printing receipt...")
-    }
 
+    private fun printReceipt(
+        cartItems: List<CartItem>,
+        change: Double,
+        receiptNumber: String,
+        paymentMethod: String,
+        ar: Double,
+        vatAmount: Double,
+        discountAmount: Double,
+        totalAmount: Double,
+        discountRate: Double
+    ) {
+        // Implement receipt printing logic here
+        // Include new fields in the receipt
+        Log.d(
+            TAG,
+            "Printing receipt... Receipt Number: $receiptNumber, Payment Method: $paymentMethod, AR: $ar, VAT: $vatAmount, Discount: $discountAmount (${discountRate * 100}%), Total: $totalAmount"
+        )
+    }
 }

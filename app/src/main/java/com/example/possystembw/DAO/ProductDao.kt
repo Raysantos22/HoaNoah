@@ -13,8 +13,6 @@ interface ProductDao {
         @Query("SELECT COUNT(*) FROM products")
         suspend fun getProductCount(): Int
 
-
-
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         suspend fun insertProduct(product: Product)
 
@@ -32,6 +30,8 @@ interface ProductDao {
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insertAll(products: List<Product>)
+
+
 }
 
 
