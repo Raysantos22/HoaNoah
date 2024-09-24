@@ -10,9 +10,6 @@ interface CartDao {
     @Query("SELECT * FROM cart_items")
     fun getAllCartItems(): Flow<List<CartItem>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(cartItem: CartItem)
-
     @Update
     suspend fun update(cartItem: CartItem)
 
@@ -28,4 +25,7 @@ interface CartDao {
     // Add this function
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(cartItems: List<CartItem>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(cartItem: CartItem)
 }

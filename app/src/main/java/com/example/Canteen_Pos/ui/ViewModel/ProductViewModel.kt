@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.Flow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.possystembw.RetrofitClient
 import com.example.possystembw.data.AppDatabase
 import com.example.possystembw.data.ProductRepository
 import kotlinx.coroutines.flow.first

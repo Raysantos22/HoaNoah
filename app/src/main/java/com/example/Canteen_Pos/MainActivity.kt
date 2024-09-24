@@ -14,13 +14,22 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val button:Button = findViewById(R.id.partyCakesbtn)
-        button.setOnClickListener{
+        val partyCakesButton: Button = findViewById(R.id.partyCakesbtn)
+        partyCakesButton.setOnClickListener {
             val intent = Intent(this, PartyCakes::class.java)
             startActivity(intent)
         }
 
-
-
+        val purchaseButton: Button = findViewById(R.id.Purchasebtn)
+        purchaseButton.setOnClickListener {
+            val intent = Intent(this, ProductManagementActivity::class.java)
+            startActivity(intent)
+        }
+        val ResellerButton: Button = findViewById(R.id.ResellerBtn)
+        ResellerButton.setOnClickListener {
+            val intent = Intent(this, TransactionView::class.java)
+            startActivity(intent)
+        }
     }
-    }
+
+}

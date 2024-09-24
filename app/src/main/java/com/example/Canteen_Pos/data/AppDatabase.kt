@@ -7,7 +7,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-
 import com.example.possystembw.DAO.CartDao
 import com.example.possystembw.DAO.ProductDao
 import com.example.possystembw.DAO.TransactionDao
@@ -15,13 +14,7 @@ import com.example.possystembw.database.CartItem
 import com.example.possystembw.database.Product
 import com.example.possystembw.database.TransactionRecord
 
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.util.concurrent.TimeUnit
-
-
-@Database(entities = [Product::class, CartItem::class, TransactionRecord::class], version = 7)  // Change version to 6
+@Database(entities = [Product::class, CartItem::class, TransactionRecord::class], version = 9)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun cartDao(): CartDao
@@ -38,9 +31,12 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
+                    "app_database1" // Keep this new name if you want to start fresh
                 )
-                    .addMigrations(MIGRATION_1_2, MIGRATION_6_7) // Add all migrations
+                    .addMigrations(
+                        MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5,
+                        MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9
+                    )
                     .build()
                 INSTANCE = instance
                 instance
@@ -65,7 +61,31 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        // Add migrations for versions 2 to 5 if necessary
+        // Add placeholder migrations for versions 2 to 5
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add migration steps if necessary
+            }
+        }
+
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add migration steps if necessary
+            }
+        }
+
+        private val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add migration steps if necessary
+            }
+        }
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add migration steps if necessary
+            }
+        }
+
+
 
         private val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -74,6 +94,18 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("ALTER TABLE transactions ADD COLUMN vat_amount REAL NOT NULL DEFAULT 0.0")
                 database.execSQL("ALTER TABLE transactions ADD COLUMN discount_rate REAL NOT NULL DEFAULT 0.0")
                 database.execSQL("ALTER TABLE transactions ADD COLUMN discount_amount REAL NOT NULL DEFAULT 0.0")
+            }
+        }
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE products ADD COLUMN image_url TEXT")
+            }
+        }
+
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Add any necessary changes for version 9
+                // If there are no changes, you can leave this empty
             }
         }
     }

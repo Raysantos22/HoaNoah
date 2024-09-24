@@ -9,7 +9,7 @@ data class Product(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "price") val price: Double,
-    @ColumnInfo(name = "imageUrl") val imageUrl: String,
+    @ColumnInfo(name = "image_url") val imageUrl: String? = null,
     @ColumnInfo(name = "quantity") var quantity: Int = 0,
 
 )

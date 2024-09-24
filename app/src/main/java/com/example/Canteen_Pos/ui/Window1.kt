@@ -361,6 +361,8 @@ class Window1 : AppCompatActivity() {
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
+                autoDatabaseTransferManager = AutoDatabaseTransferManager(this, lifecycleScope)
+                autoDatabaseTransferManager.startMonitoringConnectivity()
             }
             .setNeutralButton("Print Receipt") { dialog, _ ->
                 printReceipt(

@@ -28,10 +28,15 @@ interface ProductDao {
         @Query("SELECT * FROM products WHERE name LIKE :name")
         fun getProductsByName(name: String): Flow<List<Product>>
 
+
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insertAll(products: List<Product>)
 
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        suspend fun insert(product: Product)
 
+        @Update
+        suspend fun update(product: Product)
 }
 
 
