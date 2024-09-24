@@ -1,18 +1,16 @@
-package com.example.possystembw.adapter
+package com.example.Canteen_Pos.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.possystembw.R
-import com.example.possystembw.database.Product
+import com.example.Canteen_Pos.R
+import com.example.Canteen_Pos.database.Product
 
 
 class ProductAdapter(private val onItemClick: (Product) -> Unit) : ListAdapter<Product, ProductAdapter.ProductViewHolder>(ProductDiffCallback()) {

@@ -1,8 +1,7 @@
-package com.example.possystembw.DAO
+package com.example.Canteen_Pos.DAO
 
 import androidx.room.*
-import com.example.possystembw.database.CartItem
-import com.example.possystembw.database.Product
+import com.example.Canteen_Pos.database.CartItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,4 +1,4 @@
-package com.example.possystembw.database
+package com.example.Canteen_Pos.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -20,5 +20,6 @@ data class TransactionRecord(
     @ColumnInfo(name = "receipt_number") val receiptNumber: String,
     @ColumnInfo(name = "timestamp") val timestamp: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "payment_method") val paymentMethod: String,
-    @ColumnInfo(name = "ar") val ar: Double
+    @ColumnInfo(name = "ar") val ar: Double,
+    @ColumnInfo(name = "transacnote") val note: String
 )

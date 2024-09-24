@@ -1,4 +1,4 @@
-package com.example.possystembw.database
+package com.example.Canteen_Pos.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

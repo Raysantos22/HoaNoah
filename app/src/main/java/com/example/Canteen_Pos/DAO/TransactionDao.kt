@@ -1,10 +1,10 @@
-package com.example.possystembw.DAO
+package com.example.Canteen_Pos.DAO
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.possystembw.database.TransactionRecord
+import com.example.Canteen_Pos.database.TransactionRecord
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,4 +25,7 @@ interface TransactionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(transaction: TransactionRecord)
+
+    @Query("SELECT * FROM transactions WHERE timestamp BETWEEN :start AND :end ORDER BY timestamp DESC")
+    fun getTransactionsByDateRange(start: Long, end: Long): Flow<List<TransactionRecord>>
 }

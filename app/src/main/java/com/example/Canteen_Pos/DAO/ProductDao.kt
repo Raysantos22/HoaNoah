@@ -1,7 +1,7 @@
-package com.example.possystembw.DAO
+package com.example.Canteen_Pos.DAO
 
 import androidx.room.*
-import com.example.possystembw.database.Product
+import com.example.Canteen_Pos.database.Product
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -37,6 +37,8 @@ interface ProductDao {
 
         @Update
         suspend fun update(product: Product)
+        @Delete
+        suspend fun deleteProduct(product: Product)
 }
 
 

@@ -1,4 +1,4 @@
-package com.example.possystembw
+package com.example.Canteen_Pos
 
 import org.junit.Test
 

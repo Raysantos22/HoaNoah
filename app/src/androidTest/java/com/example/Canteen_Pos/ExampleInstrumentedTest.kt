@@ -1,4 +1,4 @@
-package com.example.possystembw
+package com.example.Canteen_Pos
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

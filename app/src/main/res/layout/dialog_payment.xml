@@ -3,7 +3,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
-
     <EditText
         android:id="@+id/amountPaidEditText"
         android:layout_width="match_parent"
@@ -11,6 +10,15 @@
         android:hint="Enter amount paid"
         android:inputType="numberDecimal" />
 
+
+    <EditText
+        android:id="@+id/noteEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter note for AR"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:visibility="gone" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,12 +1,15 @@
-package com.example.possystembw
+package com.example.Canteen_Pos
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.possystembw.ui.PartyCakes
+import com.example.Canteen_Pos.ui.PartyCakes
+import com.example.Canteen_Pos.ui.ProductManagementActivity
+import com.example.Canteen_Pos.ui.TransactionView
 
+//import com.example.Canteen_Pos.ui.TransactionView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

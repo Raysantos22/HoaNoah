@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Pos system BW"
+rootProject.name = "CanteenPOS"
 include(":app")
  

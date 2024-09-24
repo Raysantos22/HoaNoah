@@ -1,17 +1,12 @@
-package com.example.possystembw.ui.ViewModel
+package com.example.Canteen_Pos.ui.ViewModel
 import androidx.lifecycle.*
-import com.example.possystembw.database.Product
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.Flow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.possystembw.data.CartRepository
-import com.example.possystembw.data.ProductRepository
-import com.example.possystembw.database.CartItem
+import com.example.Canteen_Pos.data.CartRepository
+import com.example.Canteen_Pos.database.CartItem
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 class CartViewModel(private val repository: CartRepository) : ViewModel() {

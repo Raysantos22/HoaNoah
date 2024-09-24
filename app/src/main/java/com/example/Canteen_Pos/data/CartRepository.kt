@@ -1,9 +1,7 @@
-package com.example.possystembw.data
+package com.example.Canteen_Pos.data
 
-import com.example.possystembw.DAO.CartDao
-import com.example.possystembw.DAO.ProductDao
-import com.example.possystembw.database.CartItem
-import com.example.possystembw.database.Product
+import com.example.Canteen_Pos.DAO.CartDao
+import com.example.Canteen_Pos.database.CartItem
 import kotlinx.coroutines.flow.Flow
 
 class CartRepository(private val cartDao: CartDao) {

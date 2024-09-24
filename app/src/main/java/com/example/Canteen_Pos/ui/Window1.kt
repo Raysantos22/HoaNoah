@@ -1,4 +1,4 @@
-package com.example.possystembw.ui
+package com.example.Canteen_Pos.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -8,19 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.possystembw.R
-import com.example.possystembw.adapter.ProductAdapter
-import com.example.possystembw.ShoppingApplication
-import com.example.possystembw.adapter.CartAdapter
-import com.example.possystembw.ui.ViewModel.ProductViewModel
-import com.example.possystembw.ui.ViewModel.CartViewModel
-import com.example.possystembw.ui.ViewModel.CartViewModelFactory
-import com.example.possystembw.database.Product
-import com.example.possystembw.database.CartItem
+import com.example.Canteen_Pos.adapter.ProductAdapter
+import com.example.Canteen_Pos.ShoppingApplication
+import com.example.Canteen_Pos.adapter.CartAdapter
+import com.example.Canteen_Pos.ui.ViewModel.ProductViewModel
+import com.example.Canteen_Pos.ui.ViewModel.CartViewModel
+import com.example.Canteen_Pos.ui.ViewModel.CartViewModelFactory
+import com.example.Canteen_Pos.database.Product
+import com.example.Canteen_Pos.database.CartItem
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.app.AlertDialog
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -28,20 +28,26 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.drawerlayout.widget.DrawerLayout
-import com.example.possystembw.AutoDatabaseTransferManager
-import com.example.possystembw.DAO.TransactionDao
-import com.example.possystembw.data.AppDatabase
-import com.example.possystembw.database.TransactionRecord
+/*
+import com.example.Canteen_Pos.AutoDatabaseTransferManager
+*/
+import com.example.Canteen_Pos.DAO.TransactionDao
+import com.example.Canteen_Pos.R
+import com.example.Canteen_Pos.data.AppDatabase
+import com.example.Canteen_Pos.database.TransactionRecord
 import kotlinx.coroutines.flow.collectLatest
 import java.util.UUID
 
 class Window1 : AppCompatActivity() {
-    private lateinit var autoDatabaseTransferManager: AutoDatabaseTransferManager
+    /*
+        private lateinit var autoDatabaseTransferManager: AutoDatabaseTransferManager
+    */
     private lateinit var productViewModel: ProductViewModel
     private lateinit var cartViewModel: CartViewModel
     private lateinit var totalAmountTextView: TextView
     private lateinit var payButton: Button
+    private lateinit var noteEditText: EditText
+    private lateinit var transactionNote: String
     private val TAG = "Window1"
     private lateinit var transactionDao: TransactionDao
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +59,8 @@ class Window1 : AppCompatActivity() {
             totalAmountTextView = findViewById(R.id.totalAmountTextView)
             payButton = findViewById(R.id.payButton)
 
-            autoDatabaseTransferManager = AutoDatabaseTransferManager(this, lifecycleScope)
-            autoDatabaseTransferManager.startMonitoringConnectivity()
+            /* autoDatabaseTransferManager = AutoDatabaseTransferManager(this, lifecycleScope)
+             autoDatabaseTransferManager.startMonitoringConnectivity()*/
             // Set up RecyclerView for products
             val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
             val productAdapter = ProductAdapter { product ->
@@ -72,7 +78,7 @@ class Window1 : AppCompatActivity() {
             recyclerViewCart.adapter = cartAdapter
             recyclerViewCart.layoutManager = LinearLayoutManager(this)
             // Initialize ViewModels
-            val repository = (application as? ShoppingApplication)?.repository
+            val repository = (application as? ShoppingApplication)?.productRepository
 
             val cartRepository = (application as? ShoppingApplication)?.cartRepository
             if (repository == null || cartRepository == null) {
@@ -129,12 +135,12 @@ class Window1 : AppCompatActivity() {
         super.onStop()
         Log.d(TAG, "onStop called")
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        autoDatabaseTransferManager.stopMonitoringConnectivity()
-        Log.d(TAG, "onDestroy called")
-    }
+    /*
+        override fun onDestroy() {
+            super.onDestroy()
+            autoDatabaseTransferManager.stopMonitoringConnectivity()
+            Log.d(TAG, "onDestroy called")
+        }*/
 
     private fun addToCart(product: Product) {
         lifecycleScope.launch {
@@ -183,7 +189,8 @@ class Window1 : AppCompatActivity() {
                 total = itemTotal - itemDiscount + itemVat,
                 receiptNumber = receiptNumber,
                 paymentMethod = paymentMethod,
-                ar = if (ar > 0.0) (itemTotal - itemDiscount + itemVat) else 0.0
+                ar = if (ar > 0.0) (itemTotal - itemDiscount + itemVat) else 0.0,
+                note = if (paymentMethod == "AR") noteEditText.text.toString() else ""
             )
             transactionDao.insert(transactionRecord)
             Log.d(TAG, "Added transaction: $transactionRecord")
@@ -213,17 +220,16 @@ class Window1 : AppCompatActivity() {
         val vatSpinner = dialogView.findViewById<Spinner>(R.id.vatSpinner)
         val discountSpinner = dialogView.findViewById<Spinner>(R.id.discountSpinner)
         val discountAmountEditText = dialogView.findViewById<EditText>(R.id.discountAmountEditText)
+        noteEditText = dialogView.findViewById<EditText>(R.id.noteEditText)
 
         // Set up the spinner with payment methods
-        val paymentMethods =
-            arrayOf("Cash", "Credit Card", "Debit Card", "Bank Transfer", "Gcash", "UTANG")
-        val paymentAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, paymentMethods)
+        val paymentMethods = arrayOf("Cash",  "AR",)
+        val paymentAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, paymentMethods)
         paymentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         paymentMethodSpinner.adapter = paymentAdapter
 
         // Set up the VAT spinner
-        val vatOptions = arrayOf("12%", "0%")
+        val vatOptions = arrayOf("0%", "12%")
         val vatAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, vatOptions)
         vatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         vatSpinner.adapter = vatAdapter
@@ -236,14 +242,9 @@ class Window1 : AppCompatActivity() {
         discountSpinner.adapter = discountAdapter
 
         // Show/hide discount amount input based on discount spinner selection
-        discountSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                discountAmountEditText.visibility = if (position != 0) View.VISIBLE else View.GONE
+        paymentMethodSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                noteEditText.visibility = if (paymentMethods[position] == "AR") View.VISIBLE else View.GONE
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -255,9 +256,10 @@ class Window1 : AppCompatActivity() {
             .setPositiveButton("Pay") { dialog, _ ->
                 val amountPaid = amountPaidEditText.text.toString().toDoubleOrNull()
                 val paymentMethod = paymentMethodSpinner.selectedItem.toString()
-                val vatRate = if (vatSpinner.selectedItem.toString() == "12%") 0.12 else 0.0
+                val vatRate = if (vatSpinner.selectedItem.toString() == "0%") 0.0 else 0.12
                 val discountType = discountSpinner.selectedItem.toString()
                 val discountValue = discountAmountEditText.text.toString().toDoubleOrNull() ?: 0.0
+                transactionNote = if (paymentMethod == "AR") noteEditText.text.toString() else ""
                 if (amountPaid != null) {
                     processPayment(amountPaid, paymentMethod, vatRate, discountType, discountValue)
                 } else {
@@ -270,7 +272,6 @@ class Window1 : AppCompatActivity() {
             }
             .show()
     }
-
     private fun generateReceiptNumber(): String {
         return "REC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase()
     }
@@ -361,8 +362,8 @@ class Window1 : AppCompatActivity() {
             .setMessage(message)
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
-                autoDatabaseTransferManager = AutoDatabaseTransferManager(this, lifecycleScope)
-                autoDatabaseTransferManager.startMonitoringConnectivity()
+                /* autoDatabaseTransferManager = AutoDatabaseTransferManager(this, lifecycleScope)
+                 autoDatabaseTransferManager.startMonitoringConnectivity()*/
             }
             .setNeutralButton("Print Receipt") { dialog, _ ->
                 printReceipt(

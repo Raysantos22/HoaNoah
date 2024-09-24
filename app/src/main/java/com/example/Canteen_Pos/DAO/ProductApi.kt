@@ -1,8 +1,8 @@
-package com.example.possystembw.DAO
+package com.example.Canteen_Pos.DAO
 
-import com.example.possystembw.database.CartItem
-import com.example.possystembw.database.Product
-import com.example.possystembw.database.TransactionRecord
+import com.example.Canteen_Pos.database.CartItem
+import com.example.Canteen_Pos.database.Product
+import com.example.Canteen_Pos.database.TransactionRecord
 import retrofit2.Response
 import retrofit2.http.*
 

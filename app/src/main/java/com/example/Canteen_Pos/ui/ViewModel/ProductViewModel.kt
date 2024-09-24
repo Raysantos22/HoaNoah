@@ -1,32 +1,31 @@
-package com.example.possystembw.ui.ViewModel
+package com.example.Canteen_Pos.ui.ViewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.possystembw.database.Product
+import com.example.Canteen_Pos.database.Product
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.Flow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.possystembw.data.AppDatabase
-import com.example.possystembw.data.ProductRepository
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
+/*
+import com.example.Canteen_Pos.RetrofitClient
+*/
+import com.example.Canteen_Pos.data.AppDatabase
+import com.example.Canteen_Pos.data.ProductRepository
 
 
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ProductRepository
     val allProducts: LiveData<List<Product>>
 
+
+
+
     init {
         val productDao = AppDatabase.getDatabase(application).productDao()
-        repository = ProductRepository(productDao, RetrofitClient.instance)
+        repository = ProductRepository(productDao)
         allProducts = repository.allProducts.asLiveData()
     }
 
-    fun refreshProducts() = viewModelScope.launch {
-        repository.refreshProducts()
-    }
 
 
     fun updateProduct(product: Product) {
@@ -40,7 +39,16 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
             repository.deleteAllProducts()
         }
     }
+    /* init {
+           val productDao = AppDatabase.getDatabase(application).productDao()
+           repository = ProductRepository(productDao, RetrofitClient.instance)
+           allProducts = repository.allProducts.asLiveData()
+       }*/
 
+    /*   fun refreshProducts() = viewModelScope.launch {
+           repository.refreshProducts()
+       }
+   */
 
     /*  fun insert(product: Product) = viewModelScope.launch {
         repository.insert(product)

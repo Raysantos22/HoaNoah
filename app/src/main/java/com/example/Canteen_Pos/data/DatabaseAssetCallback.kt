@@ -1,4 +1,4 @@
-package com.example.possystembw.data
+package com.example.Canteen_Pos.data
 import android.content.Context
 import android.util.Log
 import androidx.room.RoomDatabase
