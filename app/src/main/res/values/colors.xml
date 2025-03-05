@@ -3,4 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#0000FF</color>
+    <color name="orange_light">#FFA500</color>
+    <color name="orange_dark">#FF4500</color>
+    <color name="orange">#FF6600</color>
+    <color name="green">#8FD14F</color>
+    <color name="smoke">#F5F5F5</color>
+    <color name="violet">#604CC3</color>
+    <color name="mcdonalds">#C40C0C</color>
 </resources>

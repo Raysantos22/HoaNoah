@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- White foreground. -->
+    <item android:left="10dp" android:top="0dp"
+        android:bottom="0dp" android:right="0dp">
+        <shape>
+            <solid android:color="@color/smoke" />
+            <corners
+                android:topLeftRadius="0dp"
+                android:bottomLeftRadius="150dp"
+                android:topRightRadius="0dp"
+                android:bottomRightRadius="0dp" />
+        </shape>
+    </item>
+</layer-list>
